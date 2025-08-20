@@ -2,7 +2,7 @@ package main
 
 import (
 	"gofiber-endpoint/database"
-	"gofiber-endpoint/migrate"
+	//"gofiber-endpoint/migrate"
 	"gofiber-endpoint/routes"
 	"log"
 	//"os"
@@ -18,7 +18,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	database.InitAllDBs()
-	migrate.MigrateDatabase()
+	//migrate.MigrateDatabase()
 	routes.SetupRoutes(app)
 
 	app.Listen(":3000")
