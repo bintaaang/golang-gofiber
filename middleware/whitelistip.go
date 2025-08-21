@@ -63,7 +63,6 @@ func NewIPWhitelistMiddleware(whitelist []string) fiber.Handler {
 				"ip":    clientIP,
 			})
 		}
-
 		return ctx.Next()
 	}
 }
