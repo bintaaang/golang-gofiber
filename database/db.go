@@ -11,11 +11,11 @@ import (
 )
 
 var (
-	DB       *gorm.DB
+	UsingPostgre       *gorm.DB
 )
 
 func InitAllDBs() {
-	DB = initSingleDB()
+	UsingPostgre = initSingleDB()
 }
 
 func initSingleDB() *gorm.DB {

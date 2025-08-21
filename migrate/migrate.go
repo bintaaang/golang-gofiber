@@ -8,7 +8,11 @@ import (
 )
 
 func MigrateDatabase() {
-	err := database.DB.AutoMigrate(&models.User{})
+	err := database.UsingPostgre.AutoMigrate(
+		&models.User{},
+        &models.PickupRequest{},
+        &models.PackageStatus{},
+    )
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
