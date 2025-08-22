@@ -1,17 +1,19 @@
 package middleware
 
 import (
-	"strings"
-	"github.com/gofiber/fiber/v2"
 	"fmt"
 	"os"
+	"strings"
+
+	"github.com/gofiber/fiber/v2"
+
 	//"strings"
 	"github.com/joho/godotenv"
 )
 
 func Load() []string {
 
-	_ = godotenv.Load();
+	_ = godotenv.Load()
 	// if err := godotenv.Load(); err != nil {
 	// 	return c.Status(500).JSON(fiber.Map{
 	// 		"code": "500",
@@ -19,10 +21,10 @@ func Load() []string {
 	// 	})
 	// }
 	whitelist := os.Getenv("WHITELIST_IPS")
-		// whitelist := []string{
-		// 	"127.0.0.1",
-		// 	"171.201.20.1",
-		// }
+	// whitelist := []string{
+	// 	"127.0.0.1",
+	// 	"171.201.20.1",
+	// }
 	if whitelist == "" {
 		return []string{}
 	}
@@ -32,23 +34,17 @@ func Load() []string {
 
 func NewIPWhitelistMiddleware(whitelist []string) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
-
-		//clientIP := ctx.Get("X-Forwarded-For")
-		clientIP := "182.253.55.189:1082"
-		fmt.Println(clientIP)
+		clientIP := ctx.Get("X-Forwarded-For")
 		if clientIP != "" {
-			//clientIP = ctx.IP()
-			if strings.Contains(clientIP, ":") {
-				clientIP = strings.Split(clientIP, ":")[0]
-			}
-		} else {
 			clientIP = strings.Split(clientIP, ",")[0]
-			clientIP = strings.TrimSpace(clientIP)
-			if strings.Contains(clientIP, ":") {
-				clientIP = strings.Split(clientIP, ":")[0]
-			}
+		} else {
+			clientIP = ctx.IP()
 		}
-		fmt.Println("request dari ip :", clientIP)
+		clientIP = strings.Split(clientIP, ":")[0] // hapus port kalau ada
+		clientIP = strings.TrimSpace(clientIP)
+
+		fmt.Println("Request dari IP:", clientIP)
+
 		allowed := false
 		for _, ip := range whitelist {
 			if clientIP == ip {
