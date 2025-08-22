@@ -7,11 +7,11 @@ import (
 	"gofiber-endpoint/database"
 )
 
-func GetMyPickups(c *fiber.Ctx) error {
-    courierID := c.Params("courier_id") // contoh dari JWT atau param
+func GetMyPickups(ctx *fiber.Ctx) error {
+    courierID := ctx.Params("courier_id")
 
     var pickups []models.PickupRequest
     database.UsingPostgre.Where("courier_id = ?", courierID).Find(&pickups)
 
-    return c.JSON(pickups)
+    return ctx.JSON(pickups)
 }
