@@ -5,6 +5,8 @@ import (
     "errors"
     "github.com/gofiber/fiber/v2"
     "github.com/golang-jwt/jwt/v5"
+    "fmt"
+    "strings"
 )
 
 var jwtSecret = []byte("MySuperSecretKey1234567890")
@@ -34,13 +36,20 @@ func Protected() fiber.Handler {
         authHeader := ctx.Get("Authorization")
         if authHeader == "" {
             return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "missing token"})
+            
         }
+         parts := strings.Split(strings.TrimSpace(authHeader), " ")
+        if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+            return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "invalid auth header"})
+        }
+        tokenStr := parts[1]
 
-        tokenStr := authHeader
+        //token := authHeader; fmt.Println("Token string:", tokenStr)
         token, err := jwt.ParseWithClaims(tokenStr, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
             return jwtSecret, nil
         })
         if err != nil || !token.Valid {
+            fmt.Println("Error parsing:", err)
             return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "invalid token"})
         }
 

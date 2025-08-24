@@ -22,4 +22,7 @@ func SetupRoutes(app *fiber.App) {
     app.Get("/api/my-pickups/:courier_id", handlers.GetMyPickups)
 	app.Post("/api/register", handlers.Register)
 	app.Post("/api/login", handlers.Login)
+	protected := app.Group("/", middleware.Protected())
+	protected.Get("/api/getallpickup", handlers.ViewAllPickup)
+
 }
