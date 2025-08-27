@@ -32,6 +32,7 @@ type PickupRequest struct {
     CreatedAt    time.Time
     UpdatedAt    time.Time
     DeletedAt    gorm.DeletedAt `gorm:"index"`
+    Mark         uint           `json:"mark"`
 }
 
 // PackageStatus untuk log perubahan status paket

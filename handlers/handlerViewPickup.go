@@ -34,7 +34,7 @@ func ViewAllPickup(ctx *fiber.Ctx) error {
 		})
 	}
 
-	err = database.UsingPostgre.Table(`pickup_requests`).First(&pickup).Error; if err != nil {
+	err = database.UsingPostgre.Table(`pickup_requests`).Where(`mark = 0`).Find(&pickup).Error; if err != nil {
 		return ctx.Status(500).JSON(fiber.Map{
 			"code" : 200,
 			"message": "internal error",

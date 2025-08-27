@@ -16,7 +16,7 @@ func AssignCourier(ctx *fiber.Ctx) error {
     var body Request
     if err := ctx.BodyParser(&body); err != nil {
         return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-            "code" : 400,
+            "code": 400,
             "error": err.Error(),
         })
     }
@@ -29,18 +29,31 @@ func AssignCourier(ctx *fiber.Ctx) error {
         })
     }
 
+    // update pickup
     pickup.CourierID = &body.CourierID
     pickup.Status = models.PickupStatuses.Assigned
-    database.UsingPostgre.Save(&pickup)
+    if err := database.UsingPostgre.Save(&pickup).Error; err != nil {
+        return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+            "code": 500,
+            "error": "failed to update pickup: " + err.Error(),
+        })
+    }
 
+    // buat status log
     statusLog := models.PackageStatus{
         PickupRequestID: pickup.ID,
         TrackingNo:      pickup.TrackingNo,
         Status:          models.PickupStatuses.Assigned,
-        UpdatedByID:     0,
+        UpdatedByID:     body.CourierID, // isi dengan courier biar FK valid
         Note:            "Courier assigned",
     }
-    database.UsingPostgre.Create(&statusLog)
+
+    if err := database.UsingPostgre.Create(&statusLog).Error; err != nil {
+        return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+            "code": 500,
+            "error": "failed to insert status log: " + err.Error(),
+        })
+    }
 
     return ctx.JSON(pickup)
 }
