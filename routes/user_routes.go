@@ -17,11 +17,13 @@ func SetupRoutes(app *fiber.App) {
 	//app.Get("/api/users/getall/ali", handlers.GetAllUsers)
 	app.Post("/api/pickup", handlers.CreatePickupRequest)
     //app.Get("/api/track/:tracking_no", handlers.TrackPackage)
-    app.Post("/api/assign-courier", handlers.AssignCourier)
-    app.Post("/api/update-status", handlers.UpdatePickupStatus)
+    
+   
     app.Get("/api/my-pickups/:courier_id", handlers.GetMyPickups)
 	app.Post("/api/register", handlers.Register)
 	app.Post("/api/login", handlers.Login)
 	protected := app.Group("/", middleware.Protected())
 	protected.Get("/api/getallpickup", handlers.ViewAllPickup)
+	protected.Post("/api/assign-courier", handlers.AssignCourier)
+	protected.Post("/api/update-status", handlers.UpdatePickupStatus)
 }
