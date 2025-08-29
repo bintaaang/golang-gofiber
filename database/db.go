@@ -2,9 +2,12 @@ package database
 
 import (
 	"fmt"
+	//"gofiber-endpoint/encripyt"
+	"gofiber-endpoint/encripyt"
 	"log"
 	"os"
 	"time"
+	
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -25,9 +28,14 @@ func initSingleDB() *gorm.DB {
 	port := os.Getenv("PORT")
 	name := os.Getenv("DBNAME")
 
+	result, err := encripyt.DecryptFromBase64(name, "xQXIBUi/bZU1ZbFeFFbooHV6QxE8okplr5kxKMTOzR0="); if err != nil {
+		log.Fatalf("ini adalah pesan erromu: %v", err)
+	}
+	fmt.Println(result)
+	
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
-		host, user, pass, name, port,
+		host, user, pass, result, port,
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

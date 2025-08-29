@@ -18,7 +18,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	app.Use(cors.New(cors.Config{
-        AllowOrigins: "*", // atau spesifik: "http://localhost:3001, https://flask-skripsi.my.id"
+        AllowOrigins: "*",
         AllowHeaders: "Origin, Content-Type, Accept, Authorization",
     }))
 	
