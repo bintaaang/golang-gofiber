@@ -26,7 +26,7 @@ func main() {
 		log.Fatal("domain is not in environment")
 	}
 	app.Use(cors.New(cors.Config{
-        AllowOrigins: "*", // atau spesifik: "http://localhost:3001, https://flask-skripsi.my.id"
+        AllowOrigins: "*",
         AllowHeaders: "Origin, Content-Type, Accept, Authorization",
     }))
 	
