@@ -61,12 +61,12 @@ var PickupStatuses = struct {
     Undelivered  string
 }{
     Pending:     "pending",
-    Assigned:    "assigned",
+    Assigned:    "assigned", //kurir
     PickedUp:    "picked_up",
     InSorting:   "in_sorting",
     InTransit:   "in_transit",
-    OnDelivery:  "on_delivery",
-    Delivered:   "delivered",
+    OnDelivery:  "on_delivery", //kurir
+    Delivered:   "delivered", ///kuri
     Return:      "return",
     Undelivered: "undelivered",
 }
